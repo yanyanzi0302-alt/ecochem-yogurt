@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🥛 EcoChem Yogurt</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        /* 头部 */
+        .header {
+            background: linear-gradient(135deg, #2E86AB 0%, #A23B72 100%);
+            color: white;
+            text-align: center;
+            padding: 50px 30px;
+            position: relative;
+        }
+        
+        .header h1 {
+            font-size: 3.5em;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+        
+        .tag {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            padding: 8px 20px;
+            border-radius: 50px;
+            margin-top: 20px;
+            font-size: 0.9em;
+        }
+        
+        /* 主要内容 */
+        .content {
+            padding: 40px;
+        }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+        
+        .card {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 15px;
+            border-left: 5px solid #2E86AB;
+            transition: transform 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        
+        .card h2 {
+            color: #2E86AB;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .card ul {
+            padding-left: 20px;
+        }
+        
+        .card li {
+            margin-bottom: 8px;
+        }
+        
+        /* 图表区域 */
+        .chart-section {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin: 30px 0;
+            border: 2px solid #e9ecef;
+            text-align: center;
+        }
+        
+        .chart-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        #phChart {
+            width: 100% !important;
+            height: auto !important;
+        }
+        
+        .data-points {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .data-point {
+            background: #f8f9fa;
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-size: 0.9em;
+            font-weight: bold;
+        }
+        
+        /* 化学公式 */
+        .formula {
+            background: linear-gradient(135deg, #2E86AB 0%, #A23B72 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            margin: 30px 0;
+        }
+        
+        .formula-box {
+            font-family: 'Courier New', monospace;
+            font-size: 1.8em;
+            background: rgba(255,255,255,0.1);
+            padding: 20px;
+            border-radius: 10px;
+            display: inline-block;
+            margin: 15px 0;
+        }
+        
+        /* 底部 */
+        footer {
+            background: #2E86AB;
+            color: white;
+            text-align: center;
+            padding: 30px;
+            margin-top: 40px;
+        }
+        
+        /* 响应式 */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2.5em;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+            
+            .grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .data-points {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .data-point {
+                width: 100%;
+                text-align: center;
+            }
+        }
+        
+        /* 动画 */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.8s ease-out;
+        }
+    </style>
+</head>
+<body>
+    <div class="container fade-in">
+        <!-- 头部 -->
+        <div class="header">
+            <h1>🥛 EcoChem Yogurt</h1>
+            <p>Smart Fermentation System | Chemistry Future Fund Project</p>
+            <div class="tag">📱 QR Code Activated</div>
+            <div class="tag">🔬 Real-time pH Monitoring</div>
+        </div>
+        
+        <!-- 主要内容 -->
+        <div class="content">
+            <!-- 信息网格 -->
+            <div class="grid">
+                <!-- 批次信息 -->
+                <div class="card">
+                    <h2>📋 Batch Information</h2>
+                    <ul>
+                        <li><strong>Batch ID:</strong> EC-2024-0426-001</li>
+                        <li><strong>Production Date:</strong> April 26, 2024</li>
+                        <li><strong>Target pH:</strong> 4.5 ✅ Achieved</li>
+                        <li><strong>Actual pH:</strong> 4.5 ✅ Perfect match!</li>
+                        <li><strong>Fermentation Time:</strong> 12 hours</li>
+                        <li><strong>Temperature Control:</strong> 42°C ± 0.5°C</li>
+                    </ul>
+                </div>
+                
+                <!-- 最佳实践 -->
+                <div class="card">
+                    <h2>🎯 Best Practices</h2>
+                    <ul>
+                        <li><strong>Optimal pH Range:</strong> 4.4-4.6</li>
+                        <li><strong>Consumption Time:</strong> 1 hour after meals</li>
+                        <li><strong>Storage:</strong> 2-6°C (refrigerated)</li>
+                        <li><strong>Freshness:</strong> Best within 21 days</li>
+                        <li><strong>Serving Size:</strong> 150g per serving</li>
+                        <li><strong>Probiotic Count:</strong> 1 billion CFU/g</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- 化学公式 -->
+            <div class="formula">
+                <h2>🧪 The Science Behind Yogurt</h2>
+                <p>Lactic acid fermentation transforms milk into yogurt:</p>
+                <div class="formula-box">
+                    C₁₂H₂₂O₁₁ + H₂O → 4 C₃H₆O₃
+                </div>
+                <p>Lactose is converted into lactic acid, naturally preserving the yogurt</p>
+            </div>
+            
+            <!-- 第二行网格 -->
+            <div class="grid">
+                <!-- 化学事实 -->
+                <div class="card">
+                    <h2>🧬 Chemistry Facts</h2>
+                    <ul>
+                        <li><strong>Process:</strong> Lactic Acid Fermentation</li>
+                        <li><strong>Starting pH:</strong> 6.5 (fresh milk)</li>
+                        <li><strong>Final pH:</strong> 3.9 (completed yogurt)</li>
+                        <li><strong>Key Enzyme:</strong> Lactase</li>
+                        <li><strong>Preservation:</strong> Natural acidity</li>
+                        <li><strong>Texture:</strong> Protein coagulation</li>
+                    </ul>
+                </div>
+                
+                <!-- 健康益处 -->
+                <div class="card">
+                    <h2>❤️ Health Benefits</h2>
+                    <ul>
+                        <li><strong>Digestive Health:</strong> Improves gut microbiome</li>
+                        <li><strong>Nutrient Absorption:</strong> Enhances calcium uptake</li>
+                        <li><strong>Lactose Tolerance:</strong> 70% lactose converted</li>
+                        <li><strong>Immune Support:</strong> Strengthens gut immunity</li>
+                        <li><strong>Bone Health:</strong> High bioavailable calcium</li>
+                        <li><strong>Natural Nutrition:</strong> No artificial additives</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- 图表区域 -->
+            <div class="chart-section">
+                <h2>📊 Real-time Fermentation Monitoring</h2>
+                <div class="chart-container">
+                    <canvas id="phChart"></canvas>
+                    <p style="margin: 15px 0; color: #666;">pH monitoring chart showing 12-hour fermentation process</p>
+                    
+                    <div class="data-points">
+                        <div class="data-point" style="background: #2E86AB; color: white;">Starting pH: 6.5</div>
+                        <div class="data-point" style="background: #FF6B6B; color: white;">Target pH: 4.5</div>
+                        <div class="data-point" style="background: #A23B72; color: white;">Final pH: 3.9</div>
+                        <div class="data-point" style="background: #4ECDC4; color: white;">Optimal: 4.4-4.6</div>
+                        <div class="data-point" style="background: #FFD166; color: #333;">Temp: 42°C</div>
+                        <div class="data-point" style="background: #06D6A0; color: white;">Time: 12h</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 第三行网格 -->
+            <div class="grid">
+                <!-- 环保特性 -->
+                <div class="card">
+                    <h2>🌿 Eco-Friendly Design</h2>
+                    <ul>
+                        <li><strong>Recycled Materials:</strong> 30% of packaging</li>
+                        <li><strong>Solar Power:</strong> 100% renewable energy</li>
+                        <li><strong>Water Recycling:</strong> 40% water savings</li>
+                        <li><strong>Carbon Reduction:</strong> 35% lower footprint</li>
+                        <li><strong>Waste Reduction:</strong> Smart monitoring system</li>
+                        <li><strong>Sustainable Sourcing:</strong> Local dairy partners</li>
+                    </ul>
+                </div>
+                
+                <!-- 教育价值 -->
+                <div class="card">
+                    <h2>🎓 Educational Value</h2>
+                    <ul>
+                        <li><strong>STEM Learning:</strong> Real chemistry in action</li>
+                        <li><strong>Data Science:</strong> Real-time monitoring data</li>
+                        <li><strong>Sustainability:</strong> Eco-friendly practices</li>
+                        <li><strong>Nutrition:</strong> Food science education</li>
+                        <li><strong>Technology:</strong> Smart fermentation systems</li>
+                        <li><strong>Innovation:</strong> Future food technology</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 底部 -->
+        <footer>
+            <h3>🥛 EcoChem Yogurt System</h3>
+            <p>Chemistry Future Fund Project | Smart Food Technology</p>
+            <p style="margin-top: 15px; opacity: 0.9;">
+                This website was accessed via QR code from the fermentation demonstration.<br>
+                QR Code ID: EC-2024-0426-001 | Scan Date: April 26, 2024
+            </p>
+            <p style="margin-top: 20px; font-size: 0.9em; opacity: 0.7;">
+                © 2024 EcoChem Food Science Laboratory<br>
+                All data based on actual fermentation monitoring
+            </p>
+        </footer>
+    </div>
+
+    <script>
+        // 创建pH图表
+        document.addEventListener('DOMContentLoaded', function() {
+            const ctx = document.getElementById('phChart').getContext('2d');
+            
+            // 数据
+            const hours = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12];
+            const phValues = [6.5, 6.3, 6.0, 5.5, 5.0, 4.7, 4.5, 4.4, 4.3, 4.2, 4.1, 3.9];
+            
+            // 创建图表
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: hours.map(h => h + 'h'),
+                    datasets: [{
+                        label: 'pH Value',
+                        data: phValues,
+                        borderColor: '#2E86AB',
+                        backgroundColor: 'rgba(46, 134, 171, 0.1)',
+                        borderWidth: 3,
+                        fill: true,
+                        tension: 0.4,
+                        pointBackgroundColor: '#2E86AB',
+                        pointBorderColor: '#ffffff',
+                        pointBorderWidth: 2,
+                        pointRadius: 6,
+                        pointHoverRadius: 8
+                    }, {
+                        label: 'Target pH (4.5)',
+                        data: phValues.map(() => 4.5),
+                        borderColor: '#FF6B6B',
+                        borderWidth: 2,
+                        borderDash: [5, 5],
+                        fill: false,
+                        pointRadius: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                            labels: {
+                                font: {
+                                    size: 14,
+                                    family: 'Arial'
+                                },
+                                padding: 20
+                            }
+                        },
+                        tooltip: {
+                            mode: 'index',
+                            intersect: false,
+                            backgroundColor: 'rgba(0, 0, 0, 0.7)',
+                            titleFont: {
+                                size: 14
+                            },
+                            bodyFont: {
+                                size: 14
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Fermentation Time (hours)',
+                                font: {
+                                    size: 14,
+                                    weight: 'bold'
+                                },
+                                color: '#333'
+                            },
+                            grid: {
+                                color: 'rgba(0, 0, 0, 0.1)'
+                            }
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: 'pH Value',
+                                font: {
+                                    size: 14,
+                                    weight: 'bold'
+                                },
+                                color: '#333'
+                            },
+                            min: 3.5,
+                            max: 7,
+                            grid: {
+                                color: 'rgba(0, 0, 0, 0.1)'
+                            },
+                            ticks: {
+                                stepSize: 0.5
+                            }
+                        }
+                    },
+                    animation: {
+                        duration: 2000,
+                        easing: 'easeOutQuart'
+                    }
+                }
+            });
+            
+            // 卡片点击效果
+            const cards = document.querySelectorAll('.card');
+            cards.forEach(card => {
+                card.addEventListener('click', function() {
+                    this.style.transform = 'translateY(-8px) scale(1.02)';
+                    setTimeout(() => {
+                        this.style.transform = 'translateY(-5px)';
+                    }, 200);
+                });
+            });
+            
+            // 显示当前时间
+            const now = new Date();
+            const timeElement = document.createElement('p');
+            timeElement.style.cssText = 'margin-top: 10px; font-size: 0.8em; opacity: 0.7;';
+            timeElement.textContent = 'Page loaded: ' + now.toLocaleString();
+            document.querySelector('footer').appendChild(timeElement);
+            
+            // 数据点动画
+            const dataPoints = document.querySelectorAll('.data-point');
+            dataPoints.forEach((point, index) => {
+                setTimeout(() => {
+                    point.style.transform = 'scale(1.1)';
+                    setTimeout(() => {
+                        point.style.transform = 'scale(1)';
+                    }, 300);
+                }, index * 200);
+            });
+        });
+    </script>
+</body>
+</html>
